@@ -45,19 +45,35 @@ const Home = () => {
         <tbody>
           {dataRows.map((row, rowIndex) => (
             <tr key={rowIndex} style={{ backgroundColor: rowIndex % 2 === 0 ? '#f9f9f9' : '#ffffff' }}>
-              {row.map((cell, cellIndex) => (
-                <td
-                  key={cellIndex}
-                  style={{
-                    border: '1px solid #ddd',
-                    padding: '10px',
-                    textAlign: 'center',
-                    color: '#333333',
-                  }}
-                >
-                  {cell}
+              {row.map((cell, cellIndex) => {
+                const nextRow = dataRows[rowIndex + 1];
+                const nextValue = nextRow ? (parseFloat(cell.split('$')[1]) - parseFloat(nextRow[cellIndex].split('$')[1])) : 0;
+                const nextValueFixed = nextValue.toFixed(2);
+
+                return (
+                  <td
+                    key={cellIndex}
+                    style={{
+                      border: '1px solid #ddd',
+                      padding: '10px',
+                      textAlign: 'center',
+                      color: '#333333',
+                    }}
+                  >
+                  {cellIndex === 0 && cell}
+                  {cellIndex > 0 && nextRow !== undefined &&
+                    <span>{cell} <span style={{
+                      color: nextValueFixed.includes('-') || nextValueFixed === "0.00" ? 'green' : 'red',
+                      fontWeight: 'bold'
+                    }}>
+                      {nextValueFixed.includes('-') || nextValueFixed === "0.00" ? '' : '+'}
+                      {nextValueFixed}
+                      </span>
+                    </span>
+                  }
+                  {cellIndex > 0 && nextRow == undefined && cell}
                 </td>
-              ))}
+              )})}
             </tr>
           ))}
         </tbody>
