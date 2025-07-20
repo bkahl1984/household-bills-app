@@ -1,7 +1,11 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  // Remove 'output: export' completely
-  reactStrictMode: true,
+import type { NextConfig } from 'next';
+
+const nextConfig: NextConfig = {
+  output: 'export',
+  basePath: '/household-bills-app', // 👈 matches your GitHub repo name
+  images: {
+    unoptimized: true, // disables Next.js image optimization for static export
+  },
 };
 
-module.exports = nextConfig;
+export default nextConfig;
